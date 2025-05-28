@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borang Pemantauan Pensyarah</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <style>
+        body { background-color: #f8f9fa; font-size: 14px; }
+        .container { max-width: 900px; padding: 15px; }
+        .form-section { margin-bottom: 20px; }
+        .score-group { display: flex; gap: 10px; margin-top: 5px; }
+        .score-checkbox { margin: 0; }
+        table { font-size: 12px; }
+        .error { color: red; font-size: 0.9em; }
+        @media (max-width: 576px) {
+            .container { padding: 10px; }
+            .score-group { flex-wrap: wrap; }
+            table { font-size: 10px; }
+            .table-responsive { overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mb-4">Borang Pemantauan Pelaksanaan Kurikulum</h2>
+        <form id="monitoringForm">
+            <div class="form-section">
+                <h5>Maklumat Pensyarah dan Kursus</h5>
+                <div class="mb-3">
+                    <label for="bil" class="form-label">Bil</label>
+                    <input type="number" class="form-control" id="bil" name="bil" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="namaPensyarah" class="form-label">Nama Pensyarah</label>
+                    <select class="form-select" id="namaPensyarah" name="namaPensyarah" required>
+                        <option value="">Pilih Pensyarah</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="tarikhPemantauan" class="form-label">Tarikh Pemantauan</label>
+                    <input type="date" class="form-control" id="tarikhPemantauan" name="tarikhPemantauan" required>
+                </div>
+                <div class="mb-3">
+                    <label for="namaKursus" class="form-label">Nama Kursus</label>
+                    <select class="form-select" id="namaKursus" name="namaKursus" required>
+                        <option value="">Pilih Kursus</option>
+                        <option value="Sosiologi Dalam Pendidikan">Sosiologi Dalam Pendidikan</option>
+                        <option value="Psikologi Pembelajaran">Psikologi Pembelajaran</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="kodKursus" class="form-label">Kod Kursus</label>
+                    <input type="text" class="form-control" id="kodKursus" name="kodKursus" readonly>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h5>1. Pengajaran dan Pembelajaran Mengikut RMK</h5>
+                <div class="mb-3">
+                    <label for="kandungan" class="form-label">a. Kandungan</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="kandungan">
+                        <label><input type="checkbox" class="score-checkbox" name="kandungan" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="kandungan" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="kandungan" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="kandungan" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="kandungan" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="arasKognitif" class="form-label">b. Aras kognitif, psikomotor dan afektif</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="arasKognitif">
+                        <label><input type="checkbox" class="score-checkbox" name="arasKognitif" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="arasKognitif" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="arasKognitif" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="arasKognitif" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="arasKognitif" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="kemahiranInsaniah" class="form-label">c. Kemahiran Insaniah</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="kemahiranInsaniah">
+                        <label><input type="checkbox" class="score-checkbox" name="kemahiranInsaniah" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="kemahiranInsaniah" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="kemahiranInsaniah" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="kemahiranInsaniah" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="kemahiranInsaniah" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="pentaksiran" class="form-label">d. Pentaksiran</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="pentaksiran">
+                        <label><input type="checkbox" class="score-checkbox" name="pentaksiran" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="pentaksiran" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="pentaksiran" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="pentaksiran" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="pentaksiran" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="jamPembelajaran" class="form-label">e. Jam Pembelajaran</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="jamPembelajaran">
+                        <label><input type="checkbox" class="score-checkbox" name="jamPembelajaran" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="jamPembelajaran" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="jamPembelajaran" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="jamPembelajaran" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="jamPembelajaran" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h5>2. Aktiviti Pengajaran dan Pembelajaran</h5>
+                <div class="mb-3">
+                    <label for="terancang" class="form-label">a. Terancang dan tersusun</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="terancang">
+                        <label><input type="checkbox" class="score-checkbox" name="terancang" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="terancang" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="terancang" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="terancang" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="terancang" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="jelas" class="form-label">b. Jelas dan berkesan</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="jelas">
+                        <label><input type="checkbox" class="score-checkbox" name="jelas" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="jelas" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="jelas" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="jelas" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="jelas" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="keyakinan" class="form-label">c. Penuh keyakinan</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="keyakinan">
+                        <label><input type="checkbox" class="score-checkbox" name="keyakinan" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="keyakinan" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="keyakinan" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="keyakinan" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="keyakinan" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="menarik" class="form-label">d. Menarik dan menyeronokkan</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="menarik">
+                        <label><input type="checkbox" class="score-checkbox" name="menarik" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="menarik" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="menarik" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="menarik" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="menarik" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="semangat" class="form-label">e. Penuh semangat</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="semangat">
+                        <label><input type="checkbox" class="score-checkbox" name="semangat" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="semangat" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="semangat" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="semangat" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="semangat" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="melibatkanPelajar" class="form-label">f. Melibatkan keseluruhan pelajar</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="melibatkanPelajar">
+                        <label><input type="checkbox" class="score-checkbox" name="melibatkanPelajar" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="melibatkanPelajar" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="melibatkanPelajar" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="melibatkanPelajar" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="melibatkanPelajar" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h5>3. Penglibatan Pelajar</h5>
+                <div class="mb-3">
+                    <label for="mencabar" class="form-label">a. Mencabar</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="mencabar">
+                        <label><input type="checkbox" class="score-checkbox" name="mencabar" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="mencabar" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="mencabar" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="mencabar" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="mencabar" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="pemikiranKreatif" class="form-label">b. Meransang pemikiran kreatif dan inovatif</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="pemikiranKreatif">
+                        <label><input type="checkbox" class="score-checkbox" name="pemikiranKreatif" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="pemikiranKreatif" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="pemikiranKreatif" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="pemikiranKreatif" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="pemikiranKreatif" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h5>4. Maklum Balas dan Bimbingan</h5>
+                <div class="mb-3">
+                    <label for="maklumBalas" class="form-label">Pensyarah memberi maklum balas dan bimbingan</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="maklumBalas">
+                        <label><input type="checkbox" class="score-checkbox" name="maklumBalas" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="maklumBalas" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="maklumBalas" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="maklumBalas" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="maklumBalas" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h5>5. Motivasi Pelajar</h5>
+                <div class="mb-3">
+                    <label for="motivasi" class="form-label">Pensyarah memotivasikan pelajar</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="motivasi">
+                        <label><input type="checkbox" class="score-checkbox" name="motivasi" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="motivasi" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="motivasi" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="motivasi" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="motivasi" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h5>6. Sahsiah Guru</h5>
+                <div class="mb-3">
+                    <label for="sahsiah" class="form-label">Pensyarah membina sahsiah guru yang penyayang, prihatin, penyabar</label>
+                    <div class="score-group" role="radiogroup" aria-labelledby="sahsiah">
+                        <label><input type="checkbox" class="score-checkbox" name="sahsiah" value="1"> ☑ 1 - Sangat tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="sahsiah" value="2"> ☑ 2 - Tidak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="sahsiah" value="3"> ☑ 3 - Agak setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="sahsiah" value="4"> ☑ 4 - Setuju</label>
+                        <label><input type="checkbox" class="score-checkbox" name="sahsiah" value="5"> ☑ 5 - Sangat setuju</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h5>Pemerhatian Umum / Ulasan Lanjut</h5>
+                <div class="mb-3">
+                    <label for="ulasanLanjut" class="form-label">Sila masukkan sebarang pemerhatian atau ulasan tambahan (jika ada):</label>
+                    <textarea class="form-control" id="ulasanLanjut" name="ulasanLanjut" rows="3"></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary mb-3">Hantar</button>
+            <div id="errorMessage" class="error"></div>
+        </form>
+
+        <h3 class="mt-5">Rumusan Pemantauan</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered mt-3" id="resultTable">
+                <thead>
+                    <tr>
+                        <th>BIL</th>
+                        <th>Nama Pensyarah</th>
+                        <th>Tarikh</th>
+                        <th>Kursus</th>
+                        <th>Kod Kursus</th>
+                        <th colspan="6">Seksyen 1 (Min)</th>
+                        <th colspan="7">Seksyen 2 (Min)</th>
+                        <th colspan="3">Seksyen 3 (Min)</th>
+                        <th>Seksyen 4</th>
+                        <th>Seksyen 5</th>
+                        <th>Seksyen 6</th>
+                        <th>Min Keseluruhan</th>
+                        <th>Rumusan</th>
+                    </tr>
+                    <tr>
+                        <th></th><th></th><th></th><th></th><th></th>
+                        <th>a</th><th>b</th><th>c</th><th>d</th><th>e</th><th>Min</th>
+                        <th>a</th><th>b</th><th>c</th><th>d</th><th>e</th><th>f</th><th>Min</th>
+                        <th>a</th><th>b</th><th>Min</th>
+                        <th></th><th></th><th></th><th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <div class="mt-3">
+            <button class="btn btn-secondary me-2" onclick="exportToJson()">Eksport sebagai JSON</button>
+            <button class="btn btn-secondary" onclick="exportToExcel()">Eksport sebagai Excel</button>
+        </div>
+    </div>
+
+    <script>
+        // Replace this with your Google Apps Script web app URL
+        const GOOGLE_APPS_SCRIPT_URL = https://script.google.com/macros/s/AKfycbxnyQ8yf6q9X6-VqVhUAnYoSw0XdYofqhUgwO2qlykv1gGZmL9om7GIOxNzWT8N4ayhDw/exec; // e.g., https://script.google.com/macros/s/xxx/exec
+
+        // Sample lecturer list (sorted alphabetically)
+        const lecturers = [
+            'Ali bin Ahmad',
+            'Jamu Anak Galeh',
+            'Micheal anak Ringgit',
+            'Siti binti Hassan'
+        ].sort();
+
+        // Populate lecturer dropdown
+        const namaPensyarahSelect = document.getElementById('namaPensyarah');
+        lecturers.forEach(lecturer => {
+            const option = document.createElement('option');
+            option.value = lecturer;
+            option.textContent = lecturer;
+            namaPensyarahSelect.appendChild(option);
+        });
+
+        // Course and code mapping
+        const courseCodeMap = {
+            'Sosiologi Dalam Pendidikan': 'EDUP2102',
+            'Psikologi Pembelajaran': 'EDUP3113'
+        };
+
+        // Auto-populate course code based on course selection
+        const namaKursusSelect = document.getElementById('namaKursus');
+        const kodKursusInput = document.getElementById('kodKursus');
+        namaKursusSelect.addEventListener('change', function() {
+            const selectedCourse = this.value;
+            kodKursusInput.value = courseCodeMap[selectedCourse] || '';
+        });
+
+        // Load saved submissions from localStorage
+        const tableBody = document.getElementById('tableBody');
+        const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+
+        // Auto-generate Bil
+        const bilInput = document.getElementById('bil');
+        function updateBil() {
+            bilInput.value = submissions.length + 1;
+        }
+        updateBil();
+
+        // Function to generate summary based on overall mean
+        function generateSummary(mean) {
+            mean = parseFloat(mean);
+            if (mean >= 1.0 && mean <= 1.9) {
+                return "Sangat lemah, memerlukan penambahbaikan segera.";
+            } else if (mean <= 2.9) {
+                return "Lemah, memerlukan bimbingan tambahan.";
+            } else if (mean <= 3.9) {
+                return "Sederhana, terdapat ruang untuk penambahbaikan.";
+            } else if (mean <= 4.9) {
+                return "Baik, prestasi memuaskan dengan sedikit penambahbaikan.";
+            } else if (mean === 5.0) {
+                return "Cemerlang, tahap prestasi sangat baik.";
+            }
+            return "Tiada rumusan tersedia.";
+        }
+
+        // Populate table with saved submissions
+        function loadSubmissions() {
+            tableBody.innerHTML = '';
+            submissions.forEach(data => {
+                const summary = generateSummary(data.overallMean);
+                const rumusan = `${summary}${data.ulasanLanjut ? '<br>Ulasan: ' + data.ulasanLanjut : ''}`;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${data.bil}</td>
+                    <td>${data.namaPensyarah}</td>
+                    <td>${data.tarikhPemantauan}</td>
+                    <td>${data.namaKursus}</td>
+                    <td>${data.kodKursus}</td>
+                    <td>${data.section1.kandungan}</td>
+                    <td>${data.section1.arasKognitif}</td>
+                    <td>${data.section1.kemahiranInsaniah}</td>
+                    <td>${data.section1.pentaksiran}</td>
+                    <td>${data.section1.jamPembelajaran}</td>
+                    <td>${data.meanSection1}</td>
+                    <td>${data.section2.terancang}</td>
+                    <td>${data.section2.jelas}</td>
+                    <td>${data.section2.keyakinan}</td>
+                    <td>${data.section2.menarik}</td>
+                    <td>${data.section2.semangat}</td>
+                    <td>${data.section2.melibatkanPelajar}</td>
+                    <td>${data.meanSection2}</td>
+                    <td>${data.section3.mencabar}</td>
+                    <td>${data.section3.pemikiranKreatif}</td>
+                    <td>${data.meanSection3}</td>
+                    <td>${data.maklumBalas}</td>
+                    <td>${data.motivasi}</td>
+                    <td>${data.sahsiah}</td>
+                    <td>${data.overallMean}</td>
+                    <td>${rumusan}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        loadSubmissions();
+
+        // Ensure only one checkbox is selected per score group
+        document.querySelectorAll('.score-group').forEach(group => {
+            group.addEventListener('change', function(e) {
+                if (e.target.classList.contains('score-checkbox')) {
+                    const checkboxes = group.querySelectorAll('input[type="checkbox"]');
+                    checkboxes.forEach(cb => {
+                        if (cb !== e.target) cb.checked = false;
+                    });
+                }
+            });
+        });
+
+        // Form submission and validation
+        document.getElementById('monitoringForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const errorMessage = document.getElementById('errorMessage');
+            errorMessage.textContent = '';
+
+            // Collect form data
+            const formData = new FormData(this);
+            const data = {
+                bil: parseInt(formData.get('bil')),
+                namaPensyarah: formData.get('namaPensyarah'),
+                tarikhPemantauan: formData.get('tarikhPemantauan'),
+                namaKursus: formData.get('namaKursus'),
+                kodKursus: formData.get('kodKursus'),
+                section1: {
+                    kandungan: parseInt(document.querySelector('input[name="kandungan"]:checked')?.value || 0),
+                    arasKognitif: parseInt(document.querySelector('input[name="arasKognitif"]:checked')?.value || 0),
+                    kemahiranInsaniah: parseInt(document.querySelector('input[name="kemahiranInsaniah"]:checked')?.value || 0),
+                    pentaksiran: parseInt(document.querySelector('input[name="pentaksiran"]:checked')?.value || 0),
+                    jamPembelajaran: parseInt(document.querySelector('input[name="jamPembelajaran"]:checked')?.value || 0)
+                },
+                section2: {
+                    terancang: parseInt(document.querySelector('input[name="terancang"]:checked')?.value || 0),
+                    jelas: parseInt(document.querySelector('input[name="jelas"]:checked')?.value || 0),
+                    keyakinan: parseInt(document.querySelector('input[name="keyakinan"]:checked')?.value || 0),
+                    menarik: parseInt(document.querySelector('input[name="menarik"]:checked')?.value || 0),
+                    semangat: parseInt(document.querySelector('input[name="semangat"]:checked')?.value || 0),
+                    melibatkanPelajar: parseInt(document.querySelector('input[name="melibatkanPelajar"]:checked')?.value || 0)
+                },
+                section3: {
+                    mencabar: parseInt(document.querySelector('input[name="mencabar"]:checked')?.value || 0),
+                    pemikiranKreatif: parseInt(document.querySelector('input[name="pemikiranKreatif"]:checked')?.value || 0)
+                },
+                maklumBalas: parseInt(document.querySelector('input[name="maklumBalas"]:checked')?.value || 0),
+                motivasi: parseInt(document.querySelector('input[name="motivasi"]:checked')?.value || 0),
+                sahsiah: parseInt(document.querySelector('input[name="sahsiah"]:checked')?.value || 0),
+                ulasanLanjut: formData.get('ulasanLanjut') || ''
+            };
+
+            // Validation
+            const scoreFields = [
+                ...Object.values(data.section1),
+                ...Object.values(data.section2),
+                ...Object.values(data.section3),
+                data.maklumBalas, data.motivasi, data.sahsiah
+            ];
+            if (scoreFields.some(score => score === 0)) {
+                errorMessage.textContent = 'Sila pilih satu skor (☑) untuk setiap medan penilaian.';
+                return;
+            }
+            if (!data.bil || !data.namaPensyarah || !data.tarikhPemantauan || !data.namaKursus || !data.kodKursus) {
+                errorMessage.textContent = 'Sila isi semua medan maklumat pensyarah dan kursus.';
+                return;
+            }
+
+            // Calculate means
+            data.meanSection1 = (Object.values(data.section1).reduce((sum, val) => sum + val, 0) / 5).toFixed(1);
+            data.meanSection2 = (Object.values(data.section2).reduce((sum, val) => sum + val, 0) / 6).toFixed(1);
+            data.meanSection3 = (Object.values(data.section3).reduce((sum, val) => sum + val, 0) / 2).toFixed(1);
+            data.overallMean = ((parseFloat(data.meanSection1) + parseFloat(data.meanSection2) + parseFloat(data.meanSection3) + data.maklumBalas + data.motivasi + data.sahsiah) / 6).toFixed(1);
+
+            // Generate summary based on overall mean
+            data.summary = generateSummary(data.overallMean);
+
+            // Send data to Google Sheets
+            try {
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const result = await response.json();
+                if (result.status !== 'success') {
+                    throw new Error(result.message || 'Gagal menghantar data ke Google Sheets.');
+                }
+            } catch (error) {
+                errorMessage.textContent = `Ralat: ${error.message}. Data disimpan secara tempatan sahaja.`;
+            }
+
+            // Save to localStorage (as a fallback and for local viewing)
+            submissions.push(data);
+            localStorage.setItem('submissions', JSON.stringify(submissions));
+
+            // Update table
+            const summary = generateSummary(data.overallMean);
+            const rumusan = `${summary}${data.ulasanLanjut ? '<br>Ulasan: ' + data.ulasanLanjut : ''}`;
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${data.bil}</td>
+                <td>${data.namaPensyarah}</td>
+                <td>${data.tarikhPemantauan}</td>
+                <td>${data.namaKursus}</td>
+                <td>${data.kodKursus}</td>
+                <td>${data.section1.kandungan}</td>
+                <td>${data.section1.arasKognitif}</td>
+                <td>${data.section1.kemahiranInsaniah}</td>
+                <td>${data.section1.pentaksiran}</td>
+                <td>${data.section1.jamPembelajaran}</td>
+                <td>${data.meanSection1}</td>
+                <td>${data.section2.terancang}</td>
+                <td>${data.section2.jelas}</td>
+                <td>${data.section2.keyakinan}</td>
+                <td>${data.section2.menarik}</td>
+                <td>${data.section2.semangat}</td>
+                <td>${data.section2.melibatkanPelajar}</td>
+                <td>${data.meanSection2}</td>
+                <td>${data.section3.mencabar}</td>
+                <td>${data.section3.pemikiranKreatif}</td>
+                <td>${data.meanSection3}</td>
+                <td>${data.maklumBalas}</td>
+                <td>${data.motivasi}</td>
+                <td>${data.sahsiah}</td>
+                <td>${data.overallMean}</td>
+                <td>${rumusan}</td>
+            `;
+            tableBody.appendChild(row);
+
+            // Reset form
+            this.reset();
+            updateBil();
+            kodKursusInput.value = '';
+        });
+
+        // Function to export submissions as JSON
+        function exportToJson() {
+            const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+            if (submissions.length === 0) {
+                alert('Tiada data untuk dieksport.');
+                return;
+            }
+            const dataStr = JSON.stringify(submissions, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'submissions.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Function to export submissions as Excel
+        function exportToExcel() {
+            const submissions = JSON.parse(localStorage.getItem('submissions') || '[]');
+            if (submissions.length === 0) {
+                alert('Tiada data untuk dieksport.');
+                return;
+            }
+
+            // Prepare data for Excel
+            const excelData = submissions.map(data => {
+                const summary = generateSummary(data.overallMean);
+                const rumusan = `${summary}${data.ulasanLanjut ? '\nUlasan: ' + data.ulasanLanjut : ''}`;
+                return {
+                    'BIL': data.bil,
+                    'Nama Pensyarah': data.namaPensyarah,
+                    'Tarikh': data.tarikhPemantauan,
+                    'Kursus': data.namaKursus,
+                    'Kod Kursus': data.kodKursus,
+                    'Seksyen 1a (Kandungan)': data.section1.kandungan,
+                    'Seksyen 1b (Aras Kognitif)': data.section1.arasKognitif,
+                    'Seksyen 1c (Kemahiran Insaniah)': data.section1.kemahiranInsaniah,
+                    'Seksyen 1d (Pentaksiran)': data.section1.pentaksiran,
+                    'Seksyen 1e (Jam Pembelajaran)': data.section1.jamPembelajaran,
+                    'Min Seksyen 1': data.meanSection1,
+                    'Seksyen 2a (Terancang)': data.section2.terancang,
+                    'Seksyen 2b (Jelas)': data.section2.jelas,
+                    'Seksyen 2c (Keyakinan)': data.section2.keyakinan,
+                    'Seksyen 2d (Menarik)': data.section2.menarik,
+                    'Seksyen 2e (Semangat)': data.section2.semangat,
+                    'Seksyen 2f (Melibatkan Pelajar)': data.section2.melibatkanPelajar,
+                    'Min Seksyen 2': data.meanSection2,
+                    'Seksyen 3a (Mencabar)': data.section3.mencabar,
+                    'Seksyen 3b (Pemikiran Kreatif)': data.section3.pemikiranKreatif,
+                    'Min Seksyen 3': data.meanSection3,
+                    'Seksyen 4 (Maklum Balas)': data.maklumBalas,
+                    'Seksyen 5 (Motivasi)': data.motivasi,
+                    'Seksyen 6 (Sahsiah)': data.sahsiah,
+                    'Min Keseluruhan': data.overallMean,
+                    'Rumusan': rumusan
+                };
+            });
+
+            // Create a worksheet and workbook
+            const ws = XLSX.utils.json_to_sheet(excelData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Submissions');
+
+            // Export the Excel file
+            XLSX.writeFile(wb, 'submissions.xlsx');
+        }
+    </script>
+</body>
+</html>
